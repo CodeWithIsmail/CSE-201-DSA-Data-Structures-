@@ -3,7 +3,12 @@ using namespace std;
 typedef long long ll;
 const ll mx = 100;
 ll parent[mx];
-
+ll Size[mx];
+void make(ll i)
+{
+    parent[i] = i;
+    Size[i] = 1;
+}
 ll parentFind(ll u)
 {
     if (u == parent[u])
@@ -15,7 +20,13 @@ void Union(ll a, ll b)
     a = parentFind(a);
     b = parentFind(b);
     if (a != b)
+    {
+        if (Size[a] < Size[b])
+            swap(a, b);
         parent[b] = a;
+        Size[a] += Size[b];
+        // union by size
+    }
 }
 int main()
 {
@@ -31,7 +42,7 @@ int main()
         graph.push_back({w, {u - 'a', v - 'a'}});
     }
     for (i = 0; i < vertex; i++)
-        parent[i] = i;
+        make(i);
     sort(graph.begin(), graph.end());
     ll cost = 0, totalEdge = 0;
 
